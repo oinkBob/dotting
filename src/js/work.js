@@ -7,8 +7,8 @@ class Player {
          this.y = y,
          this.r = r,
          this.velocity = {
-            x: 1,
-            y: 1
+            x: 5,
+            y: 5
          };
    }
 
@@ -56,9 +56,11 @@ class Player {
    }
 }
 class Homebase {
-   constructor(x, y) {
+   constructor(x, y, r, color) {
       this.x = x;
       this.y = y;
+      this.r = r;
+      this.color = color;
    }
    update(c) {
       this.draw(c);
@@ -66,7 +68,7 @@ class Homebase {
    draw(c) {
       c.save();
       c.beginPath();
-      c.arc(this.x + 100, this.y + 100, 50, 0, Math.PI * 2, false);
+      c.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
       c.fillStyle = "black";
       c.shadowColor = "#e3eaef";
       c.shadowBlur = 20;
@@ -83,9 +85,10 @@ class PlayingField {
       this.ctx = this.canvas.getContext('2d');
       this.cw = this.canvas.width = window.innerWidth;
       this.ch = this.canvas.height = window.innerHeight;
-      this.r = Math.random() * 100;
-      this.ufo = new Player(this.cw / 2, this.ch / 2, this.r);
-      this.homebase = new Homebase(this.cw / 2 + 50, this.ch / 2 + 50);
+      this.r = 30;
+      this.color = "black";
+      this.playerMain = new Player(this.cw / 2, this.ch / 2, this.r);
+      this.homebase = new Homebase(this.cw / 2, this.ch / 2, this.r, this.color);
       this.ctx.fillStyle = "grey";
    }
 
@@ -96,14 +99,21 @@ class PlayingField {
       this.ctx.fillStyle = "grey";
       this.ctx.fillRect(0, 0, this.cw, this.ch);
       this.homebase.update(this.ctx);
-      this.ufo.update(this.ctx);
-      console.log(this.ufo.x, this.ufo.r);
-      collPlayerAndHomebase(this.ufo.x, this.ufo.y, this.homebase.x, this.homebase.y);
+      this.playerMain.update(this.ctx);
+      collPlayerAndHomebase(this.playerMain.x, this.playerMain.y, this.playerMain.r, this.homebase.x, this.homebase.y, this.homebase.r);
    }
 }
-//util
-function collPlayerAndHomebase(xPlayer, yPlayer, xHomeBase, yHomeBase){
-   
+
+// util
+function collPlayerAndHomebase(xPlayerMain, yPlayerMain, rPlayerMain, xHomebase, yHomebase, rHomebase) {
+   let dx = xPlayerMain - xHomebase;
+   let dy = yPlayerMain - yHomebase;
+   let distance = (dx * dx + dy * dy);
+   console.log(distance);
+   console.log(2*(rHomebase*rHomebase+rPlayerMain*rPlayerMain));
+   if (distance <= 2*(rHomebase*rHomebase+rHomebase*rHomebase)) {
+      console.log("Collision");
+   }
 }
 
 let canv = new PlayingField();
