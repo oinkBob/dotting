@@ -109,8 +109,6 @@ function collPlayerAndHomebase(xPlayerMain, yPlayerMain, rPlayerMain, xHomebase,
    let dx = xPlayerMain - xHomebase;
    let dy = yPlayerMain - yHomebase;
    let distance = (dx * dx + dy * dy);
-   console.log(distance);
-   console.log(2*(rHomebase*rHomebase+rPlayerMain*rPlayerMain));
    if (distance <= 2*(rHomebase*rHomebase+rHomebase*rHomebase)) {
       console.log("Collision");
    }
