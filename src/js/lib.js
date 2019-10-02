@@ -20,7 +20,6 @@ let element = document.body;
 function requestFullScreen(element) {
     // Supports most browsers and their versions.
     var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
-    keycode.info;
     if (requestMethod) { // Native full screen.
         requestMethod.call(element);
     } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
@@ -32,7 +31,7 @@ function requestFullScreen(element) {
 }
 //Enter (for FullScreen)
 document.addEventListener("keypress", function (e) {
-    if (e.keyCode === 13) {
+    if (e.keyCode == 13 ) {
         requestFullScreen(element);
     }
 }, false);
@@ -44,10 +43,3 @@ window.addEventListener("gamepadconnected", function(e) {
       e.gamepad.buttons.length, e.gamepad.axes.length);
   });
 
-//Implement hit oder shoot or smth ALSO Controller 
-//https://keycode.info
-// document.addEventListener("keypress", function (e) {
-//     if (e.keyCode === 87) {
-//         requestFullScreen(element);
-//     }
-// }, false);

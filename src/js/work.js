@@ -22,6 +22,7 @@ class Player {
       c.fill();
       c.closePath();
       c.restore();
+
    }
 
    update(c) {
@@ -96,8 +97,13 @@ class PlayingField {
       this.ctx.fillRect(0, 0, this.cw, this.ch);
       this.homebase.update(this.ctx);
       this.ufo.update(this.ctx);
-
+      console.log(this.ufo.x, this.ufo.r);
+      collPlayerAndHomebase(this.ufo.x, this.ufo.y, this.homebase.x, this.homebase.y);
    }
+}
+//util
+function collPlayerAndHomebase(xPlayer, yPlayer, xHomeBase, yHomeBase){
+   
 }
 
 let canv = new PlayingField();
