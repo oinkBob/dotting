@@ -1,3 +1,3 @@
 # Dotting
 
-[DEMO](https://oinkbob.github.io/dotting/index.html)
+[DEMO](https://oinkBob.github.io/dotting/index.html)
