@@ -72,9 +72,6 @@ class Homebase {
    update(c) {
       this.collPlayerAndHomebase();
       this.draw(c);
-      if (grow){
-         this.r + grow;
-      }
       
    }
    draw(c) {
@@ -93,9 +90,6 @@ class Homebase {
       let radii = (canv.playerMain.r+canv.homebase.r)*(canv.playerMain.r+canv.homebase.r);
       if (distance <= radii){
          this.r += 1;
-      }
-      else{
-         grow = false;
       }
    }
 }
