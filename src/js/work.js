@@ -1,28 +1,35 @@
 /*jshint esversion: 6 */
 /*jshint -W030*/
-
+class HUD {
+   constructor(x, y) {
+      this.x = x;
+      this.y = y;
+   }
+   writeToDisplay(c) {
+      c.font = "30px Comic Sans MS";
+      c.fillStyle = "red";
+      c.textAlign = "center";
+      c.fillText("Statistics", this.x, this.y);
+   }
+}
 class Player {
    constructor(x, y, r) {
-      this.x = x,
-         this.y = y,
-         this.r = r,
-         this.velocity = {
-            x: 5,
-            y: 5
-         };
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      this.velocity = {
+         x: 5,
+         y: 5
+      };
+      this.towers = [];
    }
 
    draw(c) {
-      c.save();
       c.beginPath();
       c.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
       c.fillStyle = "#fff";
-      c.shadowColor = "#e3eaef";
-      c.shadowBlur = 20;
       c.fill();
       c.closePath();
-      c.restore();
-
    }
 
    update(c) {
@@ -56,25 +63,40 @@ class Player {
    }
 }
 class Homebase {
-   constructor(x, y, r, color) {
+   constructor(x, y, r, grow) {
       this.x = x;
       this.y = y;
       this.r = r;
-      this.color = color;
+      this.grow = 0;
    }
    update(c) {
+      this.collPlayerAndHomebase();
       this.draw(c);
+      if (grow){
+         this.r + grow;
+      }
+      
    }
    draw(c) {
-      c.save();
+    
       c.beginPath();
       c.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
       c.fillStyle = "black";
-      c.shadowColor = "#e3eaef";
-      c.shadowBlur = 20;
       c.fill();
       c.closePath();
-      c.restore();
+
+   }
+   collPlayerAndHomebase() {
+      let dx = Math.abs(canv.playerMain.x - canv.homebase.x);
+      let dy = Math.abs(canv.playerMain.y - canv.homebase.y);
+      let distance = (dx * dx + dy * dy);
+      let radii = (canv.playerMain.r+canv.homebase.r)*(canv.playerMain.r+canv.homebase.r);
+      if (distance <= radii){
+         this.r += 1;
+      }
+      else{
+         grow = false;
+      }
    }
 }
 
@@ -86,9 +108,12 @@ class PlayingField {
       this.cw = this.canvas.width = window.innerWidth;
       this.ch = this.canvas.height = window.innerHeight;
       this.r = 30;
+      this.xPlayer = Math.floor(Math.random() * (this.cw + 2*this.r - 2*this.r + 1) + 2*this.r );
+      this.yPlayer = Math.floor(Math.random() * (this.ch + 2*this.r - 2*this.r + 1) + 2*this.r );
       this.color = "black";
-      this.playerMain = new Player(this.cw / 2, this.ch / 2, this.r);
-      this.homebase = new Homebase(this.cw / 2, this.ch / 2, this.r, this.color);
+      this.playerMain = new Player(this.xPlayer, this.yPlayer, this.r);
+      this.homebase = new Homebase(this.cw / 2, this.ch / 2, this.r, false);
+      this.hud = new HUD(this.cw / 2, 50);
       this.ctx.fillStyle = "grey";
    }
 
@@ -100,19 +125,13 @@ class PlayingField {
       this.ctx.fillRect(0, 0, this.cw, this.ch);
       this.homebase.update(this.ctx);
       this.playerMain.update(this.ctx);
-      collPlayerAndHomebase(this.playerMain.x, this.playerMain.y, this.playerMain.r, this.homebase.x, this.homebase.y, this.homebase.r);
+      this.hud.writeToDisplay(this.ctx);
+      
    }
 }
 
 // util
-function collPlayerAndHomebase(xPlayerMain, yPlayerMain, rPlayerMain, xHomebase, yHomebase, rHomebase) {
-   let dx = xPlayerMain - xHomebase;
-   let dy = yPlayerMain - yHomebase;
-   let distance = (dx * dx + dy * dy);
-   if (distance <= 2*(rHomebase*rHomebase+rHomebase*rHomebase)) {
-      console.log("Collision");
-   }
-}
+
 
 let canv = new PlayingField();
 canv.animate();

@@ -8,6 +8,8 @@ let keys = {
     ArrowRight: false
 };
 
+let grow = false;
+
 window.addEventListener('keydown', function (e) {
     keys[e.code] = true;
 });
